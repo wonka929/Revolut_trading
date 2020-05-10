@@ -1,19 +1,28 @@
 symbol;sector
 W;Consumer Cyclical
-ZS;Technology
+ETSY;Consumer Cyclical
 NVTA;Healthcare
 SFIX;Consumer Cyclical
 CROX;Consumer Cyclical
-SNAP;Communication Services
+FAST;Industrials
+KDP;Consumer Defensive
+SBS;Utilities
+FIT;Technology
+PH;Industrials
+SMAR;Technology
+KEYS;Technology
+BX;Financial Services
 AMD;Technology
 NVCR;
 DOCU;Technology
+LULU;Consumer Cyclical
 ROKU;Communication Services
+DPZ;Consumer Cyclical
+CMG;Consumer Cyclical
 RNG;Technology
+MELI;Consumer Cyclical
 SHOP;Technology
 TSLA;Consumer Cyclical
-GOL;Industrials
+WEN;Consumer Cyclical
 HMY;Basic Materials
-ALLT;Technology
 EGO;Basic Materials
-TGT;Consumer Defensive
