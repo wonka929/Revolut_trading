@@ -30,13 +30,13 @@ for item in stocks_list['Ticker']:
 
 
 data = yf.download(  # or pdr.get_data_yahoo(...
-        # tickers list or string as well
+         tickers list or string as well
         tickers = stocks,
 
         # use "period" instead of start/end
         # valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max
         # (optional, default is '1mo')
-        period = "2y",
+        period = "1y",
 
         # fetch data by interval (including intraday if period < 60 days)
         # valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
@@ -244,6 +244,7 @@ filtered = pd.read_csv('best_performers_MACD.csv', sep=';', decimal=',').set_ind
 
 score = []
 name = []
+advice = {}
 
 for company in filtered.index.values:
     stock  = Sdf.retype(get_stock_data(data, company))
@@ -281,11 +282,17 @@ for company in filtered.index.values:
     stock['gain'] = gain
     #score.append(gain.sum()/(stock['close'][-1]-stock['close'][0]))
     #name.append(symbol)
-    stock['Advice']=stock['Advice']*100
+    stock['advice_text'] = stock['Advice'].replace({0:'HOLD', 1:'BUY', -1:'SELL'})
+    advice[company]=stock['advice_text'][-1]
+    stock['Advice']=stock['Advice']*stock['close'].max()
     stock.drop(columns=['volume', 'gain']).plot(figsize=(30,10))
     plot.title(str(round(gain.sum()*100/(stock['close'][0]))) + '%')
     plot.savefig(str(company) + '_test.png')
     plot.close()
+
+tutte_azioni = pd.DataFrame.from_dict(advice, orient='index')
+tutte_azioni['link'] = 'https://www.tradingview.com/symbols/' + tutte_azioni.index.values
+print(tutte_azioni.to_markdown())
 
 
 # ## Action on current owned actions
@@ -299,7 +306,7 @@ from tqdm.notebook import tqdm
 
 data = pd.read_pickle('dataset.pkl')
 data = data.drop(data.index[0])
-owned = ['MSFT','TSLA']
+owned = ['SFIX','WEN','NVTA','CTAS']
 
 score = []
 name = []
@@ -339,4 +346,29 @@ for company in owned:
 azione = pd.DataFrame.from_dict(advice, orient='index')
 azione['link'] = 'https://www.tradingview.com/symbols/' + azione.index.values
 print(azione.to_markdown())
+
+from PIL import Image, ImageOps
+import glob
+import os
+
+# Trim all png images with white background in a folder
+# Usage "python PNGWhiteTrim.py ../someFolder"
+
+filePaths = glob.glob(os.getcwd() + "/*.png") #search for all png images in the folder
+
+for filePath in filePaths:
+    image=Image.open(filePath)
+    image.load()
+    imageSize = image.size
+    
+    # remove alpha channel
+    invert_im = image.convert("RGB") 
+    
+    # invert image (so that white is 0)
+    invert_im = ImageOps.invert(invert_im)
+    imageBox = invert_im.getbbox()
+    
+    cropped=image.crop(imageBox)
+    #print(filePath, "Size:", imageSize, "New Size:", imageBox)
+    cropped.save(filePath)
 
