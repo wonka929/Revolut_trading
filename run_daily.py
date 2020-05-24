@@ -30,7 +30,7 @@ for item in stocks_list['Ticker']:
 
 
 data = yf.download(  # or pdr.get_data_yahoo(...
-         tickers list or string as well
+        #tickers list or string as well
         tickers = stocks,
 
         # use "period" instead of start/end
