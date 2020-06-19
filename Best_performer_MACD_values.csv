@@ -1,26 +1,26 @@
 symbol;sector
-MTDR;Energy
-NLOK;Technology
-SFIX;Consumer Cyclical
+HOME;Consumer Cyclical
+TGI;Industrials
+TEVA;Healthcare
 CLDR;Technology
+CROX;Consumer Cyclical
+NIO;Consumer Cyclical
 NPTN;Technology
 HIMX;Technology
-BTG;Basic Materials
-MBT;Communication Services
-CZR;Consumer Cyclical
-WDC;Technology
+IMGN;Healthcare
+RUN;Technology
+INFN;Technology
 PAAS;Basic Materials
-WING;Consumer Cyclical
-BILI;Communication Services
-SPLK;Technology
-JD;Consumer Cyclical
-UCTT;Technology
+LEN;Consumer Cyclical
+DHI;Consumer Cyclical
+SWKS;Technology
 PDD;Consumer Cyclical
-SPCE;Industrials
+ZG;Communication Services
+DOCU;Technology
+FVRR;Communication Services
+LULU;Consumer Cyclical
 AAPL;Technology
-BYND;Consumer Defensive
-NVDA;Technology
+RNG;Technology
 TSLA;Consumer Cyclical
-MGI;Financial Services
-EGO;Basic Materials
-GOLD;Basic Materials
+PHM;Consumer Cyclical
+TGT;Consumer Defensive

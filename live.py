@@ -10,7 +10,7 @@ import datetime
 #%matplotlib inline
 cf.set_config_file(offline=True)
 
-stocks_list = ('DOCU', 'CTAS', 'SFIX')
+stocks_list = ('DOCU', 'CTAS', 'SFIX', 'BYND')
 
 
 while 15<=datetime.datetime.now().hour<22:

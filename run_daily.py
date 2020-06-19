@@ -306,7 +306,7 @@ from tqdm.notebook import tqdm
 
 data = pd.read_pickle('dataset.pkl')
 data = data.drop(data.index[0])
-owned = ['SFIX','WEN','NVTA','CTAS']
+owned = ['SFIX','WEN','NVTA','CTAS','DOCU']
 
 score = []
 name = []
