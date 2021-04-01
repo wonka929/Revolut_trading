@@ -1,0 +1,17 @@
+2020-11-22 14:46:18,040 [6089] DEBUG    root:75: [JupyterRequire] Loading Jupyter Require extension.
+2020-11-22 14:46:18,040 [6089] DEBUG    root:93: [JupyterRequire] Initializing comms.
+2020-11-22 14:46:18,040 [6089] INFO     root:247: [JupyterRequire] Initializing comms.
+2020-11-22 14:46:18,043 [6089] DEBUG    root:195: [JupyterRequire] Configuration requested: {'paths': {}, 'shim': None}
+2020-11-22 14:46:18,044 [6089] INFO     root:271: [JupyterRequire] Comms have been successfully initialized.
+2020-11-22 14:46:18,044 [6089] DEBUG    root:97: [JupyterRequire] Registering comm targets.
+2020-11-22 14:46:18,650 [6089] DEBUG    root:75: [JupyterRequire] Loading Jupyter Require extension.
+2020-11-22 14:46:18,650 [6089] DEBUG    root:93: [JupyterRequire] Initializing comms.
+2020-11-22 14:46:18,651 [6089] INFO     root:247: [JupyterRequire] Initializing comms.
+2020-11-22 14:46:18,655 [6089] DEBUG    root:195: [JupyterRequire] Configuration requested: {'paths': {}, 'shim': None}
+2020-11-22 14:46:18,656 [6089] INFO     root:271: [JupyterRequire] Comms have been successfully initialized.
+2020-11-22 14:46:18,662 [6089] DEBUG    root:97: [JupyterRequire] Registering comm targets.
+2020-11-22 14:52:54,859 [6089] DEBUG    urllib3.connectionpool:939: [JupyterRequire] Starting new HTTPS connection (1): query1.finance.yahoo.com:443
+2020-11-22 14:52:55,063 [6089] DEBUG    urllib3.connectionpool:433: [JupyterRequire] https://query1.finance.yahoo.com:443 "GET /v8/finance/chart/NIO?range=1w&interval=1m&includePrePost=False&events=div%2Csplits HTTP/1.1" 200 None
+2020-11-22 14:52:55,090 [6089] INFO     numexpr.utils:141: [JupyterRequire] NumExpr defaulting to 4 threads.
+2020-11-22 14:55:09,975 [6089] DEBUG    urllib3.connectionpool:939: [JupyterRequire] Starting new HTTPS connection (1): query1.finance.yahoo.com:443
+2020-11-22 14:55:10,152 [6089] DEBUG    urllib3.connectionpool:433: [JupyterRequire] https://query1.finance.yahoo.com:443 "GET /v8/finance/chart/NIO?range=5d&interval=1m&includePrePost=False&events=div%2Csplits HTTP/1.1" 200 None

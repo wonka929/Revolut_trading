@@ -12,6 +12,8 @@ import matplotlib.pyplot as plot
 import seaborn as sns
 import pickle
 
+pd.options.mode.chained_assignment = None  # default='warn'
+
 
 # ## Importazione della lista di stock supportata da revolut
 
@@ -306,7 +308,7 @@ from tqdm.notebook import tqdm
 
 data = pd.read_pickle('dataset.pkl')
 data = data.drop(data.index[0])
-owned = ['SFIX','WEN','NVTA','CTAS','DOCU']
+owned = ['NIO','PLUG']
 
 score = []
 name = []
