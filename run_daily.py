@@ -12,6 +12,8 @@ import numpy as np
 from PIL import Image, ImageOps
 import glob
 import os
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -21,7 +23,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 stocks_list = pd.read_csv("Stock_list_1.csv", sep=",")
 stocks = ""
 for i, row in stocks_list.iterrows():
-    if row["Name"] != "NOT SURE":
+    if row["Name"] != "Uncertain":
         stocks = stocks + " " + str(row["Ticker"])
 
 
@@ -54,7 +56,8 @@ data = yf.download(  # or pdr.get_data_yahoo(...
     # (optional, default is None)
     proxy=None,
 )
-
+print("Questo è il db")
+print(data)
 data.to_pickle("dataset.pkl")
 
 # Salvataggio dello storico e riapertura dello stesso
@@ -64,7 +67,6 @@ data = pd.read_pickle("dataset.pkl")
 # ff = pd.read_pickle('descriptions.pkl')
 
 # Fillna dei dati NAN con 0
-
 data.fillna(value=0, inplace=True)
 
 
@@ -80,7 +82,9 @@ def get_stock_data(df, stocksimbol):
 
 
 # data = pd.read_pickle('dataset.pkl')
+
 data = data.drop(data.index[0])
+data = data.dropna(axis=1, how='all')
 
 score = []
 name = []
@@ -96,9 +100,7 @@ for symbol in tqdm.tqdm(data.columns.get_level_values(1).unique().values):
         # In questo modo si crea un vettore per cui il valore 0 = Hold, 1 = Buy e -1 = Sell
 
         signal = stock["macds"]  # Your signal line
-        macd = stock[
-            "macd"
-        ]  # The MACD that need to cross the signal line to give you a Buy/Sell signal
+        macd = stock["macd"]  # The MACD that need to cross the signal line to give you a Buy/Sell signal
         listLongShort = ["No data"]  # Since you need at least two days in the for loop
 
         for i in range(1, len(signal)):
@@ -118,15 +120,15 @@ for symbol in tqdm.tqdm(data.columns.get_level_values(1).unique().values):
         stock["Advice"][0] = 0
 
         if (
-            stock[stock["Advice"] != 0]["advice"][-1] == 1
-            and stock[stock["Advice"] != 0]["advice"].index[-1]
+            stock[stock["Advice"] != 0]["Advice"][-1] == 1
+            and stock[stock["Advice"] != 0]["Advice"].index[-1]
             != stock["Advice"].index[-1]
         ):
             stock["Advice"][-1] = -1
 
         elif (
-            stock[stock["Advice"] != 0]["advice"][-1] == 1
-            and stock[stock["Advice"] != 0]["advice"].index[-1]
+            stock[stock["Advice"] != 0]["Advice"][-1] == 1
+            and stock[stock["Advice"] != 0]["Advice"].index[-1]
             == stock["Advice"].index[-1]
         ):
             stock["Advice"][-1] = 0
@@ -140,13 +142,15 @@ for symbol in tqdm.tqdm(data.columns.get_level_values(1).unique().values):
         name.append(symbol)
         diff.append(delta)
 
-    except:
+    except Exception as e:
+        print(f"Error processing {symbol}: {e}")
         continue
 
 
 diff = pd.DataFrame(diff, index=name)
 diff.rename(columns={0: "diff"}, inplace=True)
 scores = pd.DataFrame(score, index=name)
+
 scores.rename(columns={0: "Performance", 1: "diff"}, inplace=True)
 scores = scores.join(diff)
 
@@ -192,27 +196,33 @@ filtered = pd.read_csv("best_performers_MACD.csv", sep=";", decimal=",").set_ind
 )
 
 for company in filtered.index.values:
-    ticker = yf.Ticker(company)
-    info = ticker.get_info()
-    dict = {
-        "name": info.get("shortName", np.nan),
-        "industry": info.get("industry", np.nan),
-        "sector": info.get("sector", np.nan),
-        "trailingPE": info.get("trailingPE", np.nan),
-        "forwardPE": info.get("forwardPE", np.nan),
-        "profitMargins": info.get("profitMargins", np.nan),
-        "pegRatio": info.get("pegRatio", np.nan),
-        "currentPrice": info.get("currentPrice", np.nan),
-        "targetHighPrice": info.get("targetHighPrice", np.nan),
-        "targetLowPrice": info.get("targetLowPrice", np.nan),
-        "targetMeanPrice": info.get("targetMeanPrice", np.nan),
-        "targetMedianPrice": info.get("targetMedianPrice", np.nan),
-        "recommendationMean": info.get("recommendationMean", np.nan),
-        "recommendationKey": info.get("recommendationKey", np.nan),
-        "numberOfAnalystOpinions": info.get("numberOfAnalystOpinions", np.nan),
-        "operatingMargins": info.get("operatingMargins", np.nan),
-    }
-    analytics = pd.concat([analytics, pd.DataFrame([dict])], ignore_index=True)
+    try:
+        ticker = yf.Ticker(company)
+        info = ticker.get_info()
+        dict = {
+            "name": info.get("shortName", np.nan),
+            "industry": info.get("industry", np.nan),
+            "sector": info.get("sector", np.nan),
+            "trailingPE": info.get("trailingPE", np.nan),
+            "forwardPE": info.get("forwardPE", np.nan),
+            "profitMargins": info.get("profitMargins", np.nan),
+            "pegRatio": info.get("pegRatio", np.nan),
+            "currentPrice": info.get("currentPrice", np.nan),
+            "targetHighPrice": info.get("targetHighPrice", np.nan),
+            "targetLowPrice": info.get("targetLowPrice", np.nan),
+            "targetMeanPrice": info.get("targetMeanPrice", np.nan),
+            "targetMedianPrice": info.get("targetMedianPrice", np.nan),
+            "recommendationMean": info.get("recommendationMean", np.nan),
+            "recommendationKey": info.get("recommendationKey", np.nan),
+            "numberOfAnalystOpinions": info.get("numberOfAnalystOpinions", np.nan),
+            "operatingMargins": info.get("operatingMargins", np.nan),
+        }
+        analytics = pd.concat([analytics, pd.DataFrame([dict])], ignore_index=True)
+    except:
+        print("Errore con stock " + str(company))
+        # If there's an error with a specific stock, we skip it and continue with the next one and delete the row from filtered
+        filtered.drop(company, inplace=True)
+        continue
 
 analytics.set_index(filtered.index.values, inplace=True)
 analytics["TO_MEAN"] = round(
